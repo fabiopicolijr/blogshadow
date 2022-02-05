@@ -8,6 +8,7 @@ import ptBR, { format } from 'date-fns';
 
 import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
+import Head from 'next/head';
 
 interface Post {
   uid?: string;
@@ -42,42 +43,46 @@ export default function Home({ postsPagination }: HomeProps) {
   }
 
   return (
-    <div className={commonStyles.container}>
-      <main className={styles.posts}>
-        {posts.map((post) => {
-          return (
-            <Link key={post.uid} href={`/post/${post.uid}`}>
-              <a>
-                <div className={styles.post}>
-                  <h1>{post.data.title}</h1>
-                  <p>{post.data.subtitle}</p>
-                  <FiCalendar />
-                  <span>
-                    {format(
-                      new Date(post.first_publication_date),
-                      'dd MMM yyyy',
-                      { locale: ptBR }
-                    )}
-                  </span>
-                  <FiUser />
-                  <span>{post.data.author}</span>
-                </div>
-              </a>
-            </Link>
-          );
-        })}
+    <>
+      <Head>{<title>Home | SpaceTraveling</title>}</Head>
 
-        {nextPage && (
-          <button
-            type="button"
-            className={styles.loadPosts}
-            onClick={handleLoadNextPosts}
-          >
-            Carregar mais posts
-          </button>
-        )}
-      </main>
-    </div>
+      <div className={commonStyles.container}>
+        <main className={styles.posts}>
+          {posts.map((post) => {
+            return (
+              <Link key={post.uid} href={`/post/${post.uid}`}>
+                <a>
+                  <div className={styles.post}>
+                    <h1>{post.data.title}</h1>
+                    <p>{post.data.subtitle}</p>
+                    <FiCalendar />
+                    <span>
+                      {format(
+                        new Date(post.first_publication_date),
+                        'dd MMM yyyy',
+                        { locale: ptBR }
+                      )}
+                    </span>
+                    <FiUser />
+                    <span>{post.data.author}</span>
+                  </div>
+                </a>
+              </Link>
+            );
+          })}
+
+          {nextPage && (
+            <button
+              type="button"
+              className={styles.loadPosts}
+              onClick={handleLoadNextPosts}
+            >
+              Carregar mais posts
+            </button>
+          )}
+        </main>
+      </div>
+    </>
   );
 }
 
